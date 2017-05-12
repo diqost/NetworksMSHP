@@ -2,22 +2,25 @@ import socket
 import json
 
 sock = socket.socket()
-sock.connect(('localhost', 9085))
+sock.connect(('192.168.1.121', 9087))
 hello = json.dumps({
 					'type': 'server', 
-					'login': 'diqost'
+					'login': 'lol'
 				    })
-print (hello)
+msg = json.dumps({
+	'type': 'broadcast', 'from': 'me', 'msg': 'kek'
+})
+ans = json.dumps({
+	'status': 'ok'
+})
+print(hello)
 sock.send(bytes(hello,'utf-8'))
-data = sock.recv(1024).decode('utf-8')
-if not json.loads(data).status == 'ok':
-	print("smth wrong")
-	exit()
+ans = json.loads(sock.recv(1024).decode('utf-8'))
+print(ans)
+if ans['status'] == 'ok':
+	print("U'r connected")
 while True:
 	sock.send(bytes(input(), 'utf-8'))
 	data = sock.recv(1024).decode('utf-8')
 	print(data)
 sock.close()
-
-
- 
