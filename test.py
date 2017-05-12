@@ -1,10 +1,5 @@
 import socket
-import json
 import threading
-
-err_msg = json.dumps({ 'status': 'bad', 
-					   'reason': 'wrong msg format'})
-
 
 class ThreadedServer(object):
     def __init__(self, host, port):
@@ -25,19 +20,24 @@ class ThreadedServer(object):
         size = 1024
         while True:
             try:
-                data = json.loads(conn.recv(1024).decode('utf-8'))
-                print(data)
-                if data['type'] == 'server':
-                	print("smth wrong")
-                	conn.send(bytes(err_msg,'utf-8'))
+                data = client.recv(size)
+                if data:
+                    # Set the response to echo back the recieved data 
+                    response = data
+                    client.send(response)
                 else:
                     raise error('Client disconnected')
-                    client.close()
-
             except:
                 client.close()
                 return False
 
+if __name__ == "__main__":
+    while True:
+        port_num = input("Port? ")
+        try:
+            port_num = int(port_num)
+            break
+        except ValueError:
+            pass
 
-
-ThreadedServer('',9085).listen()
+    ThreadedServer('',port_num).listen()

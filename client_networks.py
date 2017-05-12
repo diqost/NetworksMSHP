@@ -2,7 +2,7 @@ import socket
 import json
 
 sock = socket.socket()
-sock.connect(('localhost', 9094))
+sock.connect(('localhost', 9085))
 hello = json.dumps({
 					'type': 'server', 
 					'login': 'diqost'
